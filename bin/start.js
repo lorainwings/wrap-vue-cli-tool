@@ -107,8 +107,8 @@ const proInitError = err => {
  * @param {*} name 用户输入的名称
  */
 const proInitSuccess = async name => {
-  const src = path.resolve(__dirname, '../src/pages/template');
-  const dist = path.resolve(__dirname, `../src/pages/${name}`);
+  const src = path.join(process.cwd(), './src/pages/template');
+  const dist = path.join(process.cwd(), `./src/pages/${name}`);
   await operaDirRecur(src, dist);
 };
 
@@ -118,8 +118,8 @@ const proInitSuccess = async name => {
  * @param {*} note 项目活动注释
  */
 const replaceEntryForWebpack = async (name, note) => {
-  const dist = path.resolve(__dirname, '../public/index.js');
-  const entry = path.resolve(__dirname, `../src/pages/${name}`);
+  const dist = path.join(process.cwd(), './public/index.js');
+  const entry = path.join(process.cwd(), `./src/pages/${name}`);
   const reader = await readFile(dist, 'utf8').then(data => {
     const caches = data.toString().split('\n');
     const result = caches.map(line => {
@@ -145,7 +145,7 @@ const replaceEntryForWebpack = async (name, note) => {
  * @param {*} input 项目名称
  */
 const dirFileInit = input => {
-  const dist = path.resolve(__dirname, '../src/pages');
+  const dist = path.join(process.cwd(), './src/pages');
   return readdir(dist).then(async files => {
     if (files.includes(input)) {
       proInitError('pages文件夹下该项目名已存在!');

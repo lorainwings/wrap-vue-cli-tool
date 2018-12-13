@@ -10,7 +10,7 @@ const autocomplete = require('inquirer-autocomplete-prompt');
 inquirer.registerPrompt('autocomplete', autocomplete);
 
 const renderDirList = () => {
-  const destDir = path.resolve(__dirname, '../src/pages/');
+  const destDir = path.join(process.cwd(), './src/pages/');
   const files = fs.readdirSync(destDir);
   const list = files.filter(f => {
     if (!/template|^\./gi.test(f)) return true;
