@@ -12,7 +12,7 @@ A command line tool to help vue-server-cli build projects
 <a name="installation"></a>
 
 ```shell
-npm install warp-cli
+npm install warp-cli -D
 ```
 
 ```javascript
