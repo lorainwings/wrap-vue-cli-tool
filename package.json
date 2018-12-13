@@ -1,0 +1,31 @@
+{
+  "name": "wrap-cli",
+  "version": "1.0.0",
+  "repository": "https://",
+  "description": "",
+  "main": "index.js",
+  "keywords": [
+    "command"
+  ],
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "bin": {
+    "wrap-cli": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "cp ../../README.md .",
+    "postpublish": "rm -f README.md"
+  },
+  "author": "lorain",
+  "license": "ISC",
+  "devDependencies": {
+    "colors": "^1.3.3",
+    "eslint": "^5.10.0",
+    "eslint-plugin-babel": "^3.3.0",
+    "fuzzy": "^0.1.3",
+    "inquirer": "^6.2.1",
+    "inquirer-autocomplete-prompt": "^1.0.1"
+  }
+}
