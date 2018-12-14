@@ -11,7 +11,7 @@
     "node": ">=6.0.0"
   },
   "bin": {
-    "wrap-cli": "./index.js"
+    "wrap-vue-cli-tool": "./index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
