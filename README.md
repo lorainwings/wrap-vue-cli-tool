@@ -1,6 +1,6 @@
-# wrap-vue-cli
+# wrap-vue-cli-tool
 
-A command line tool that encapsulates vue-server-cli help us build multiple pages project;
+A command line tool that encapsulates vue-server-cli help us manage multiple pages project;
 
 
 ## [Documentation](#documentation)
@@ -12,11 +12,11 @@ A command line tool that encapsulates vue-server-cli help us build multiple page
 <a name="installation"></a>
 
 ```shell
-npm install wrap-vue-cli -D
+npm install wrap-vue-cli-tool -D
 ```
 
 ```javascript
- wrap-vue-cli serve
- wrap-vue-cli build
- wrap-vue-cli start
+ wrap-vue-cli-tool serve
+ wrap-vue-cli-tool build
+ wrap-vue-cli-tool start
 ```
