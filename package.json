@@ -1,7 +1,7 @@
 {
   "name": "wrap-vue-cli-tool",
   "version": "1.0.1",
-  "repository": "https://",
+  "repository": "https://github.com/lorainwings/wrap-vue-cli-tool.git",
   "description": "",
   "main": "index.js",
   "keywords": [
