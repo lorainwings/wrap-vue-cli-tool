@@ -194,5 +194,4 @@ const createTask = async () => {
   setTimeout(process.exit, 1000);
 };
 
-createTask();
 module.exports = createTask;
