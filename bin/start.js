@@ -1,9 +1,9 @@
-
 /* eslint-disable */
 const fs = require('fs');
 const path = require('path');
 const colors = require('colors');
 const readline = require('readline');
+const inquirer = require('inquirer');
 
 const readdir = promisify(fs.readdir); // read dir
 const stat = promisify(fs.stat); // check exist
@@ -29,6 +29,27 @@ function promisify(fn) {
       fn(...args);
     });
 }
+
+const collectInput = async (prompt, name) =>
+  readSyncByRl(prompt).then(async input => {
+    if (input === '') {
+      return collectInput(`===== ${name}为空,请重新输入：=====\n`, name);
+    }
+    console.log(`你输入的${name}为:   ${input}`.bold);
+    return input;
+  });
+
+const collectRouteMode = async () => {
+  const res = await inquirer.prompt([
+    {
+      type: 'list',
+      message: '请选择路由模式(hash/history): ',
+      name: 'mode',
+      choices: ['history', 'hash']
+    }
+  ]);
+  return res;
+};
 
 /**
  * @desc 接受用户输入内容
@@ -113,30 +134,31 @@ const proInitSuccess = async name => {
 };
 
 /**
- * @desc 修改活动的入口地址
+ * @desc 修改路由模式
  * @param {*} name 项目名称
  * @param {*} note 项目活动注释
  */
-const replaceEntryForWebpack = async (name, note) => {
-  const dist = path.join(process.cwd(), './public/index.js');
-  const entry = path.join(process.cwd(), `./src/pages/${name}`);
-  const reader = await readFile(dist, 'utf8').then(data => {
+const replaceRouteMode = async (name, mode) => {
+  if (mode.indexOf('hash') > -1) {
+    console.log(`📎📎  路由已配置为${mode}模式!`.cyan.bold);
+    return;
+  }
+  const dest = path.join(process.cwd(), `./src/pages/${name}/router.js`);
+  const reader = await readFile(dest, 'utf8').then(data => {
     const caches = data.toString().split('\n');
     const result = caches.map(line => {
-      if (line.indexOf('}') > -1) {
-        return `  ${name}: '${name}', // ${note}\n};`;
-      } else if (/const\s+current/gi.test(line)) {
-        return `const current = list.${name}; // 当前活动入口标志`;
-      } else if (/\w+:\s*'\w+'(,?)/gi.test(line)) {
-        return line.replace(/(\w+:\s*'\w+')(,?)/gi, '$1,');
+      if (line.indexOf('mode') > -1) {
+        return line.replace(/(history|hash)/, mode);
+      } else if (line.indexOf('base') > -1) {
+        return line.replace(/'\/\w*'/, `'/${name}'`);
       }
       return line;
     });
     return result.join('\n');
   });
-  await writeFile(dist, reader, 'utf8').then(
-    () => console.log(`项目入口路径修改完成! \n项目入口为: ${entry}`.green),
-    () => console.log('====== 活动页面入口路径修改失败! =====\n'.underline.red)
+  await writeFile(dest, reader, 'utf8').then(
+    () => console.log(`📎📎  路由已配置为${mode}模式!`.cyan.bold),
+    () => console.log('路由模式初始化失败!'.underline.red)
   );
 };
 
@@ -151,19 +173,9 @@ const dirFileInit = input => {
       proInitError('pages文件夹下该项目名已存在!');
     } else {
       await proInitSuccess(input);
-      setTimeout(process.exit, 1000);
     }
   });
 };
-
-const collectInput = async (prompt, name) =>
-  readSyncByRl(prompt).then(async input => {
-    if (input === '') {
-      return collectInput(`===== ${name}为空,请重新输入：=====\n`, name);
-    }
-    console.log(`你输入的${name}为:   ${input}`.bold);
-    return input;
-  });
 
 /**
  * @desc 初始化项目总任务调度
@@ -173,13 +185,14 @@ const createTask = async () => {
     '请输入英文名称用于创建项目目录(请使用驼峰命名)：',
     '项目目录英文名称'
   );
-  // const note = await collectInput(
-  //   '请输入注释用于本次创建项目的活动说明(请使用中文)：',
-  //   '本次创建项目注释'
-  // );
   await dirFileInit(name);
-  // await replaceEntryForWebpack(name, note);
-  console.log(`👍👍👍  项目已创建完成, Good Luck~`.green.bold);
+  const { mode } = await collectRouteMode();
+  await replaceRouteMode(name, mode);
+  console.log(
+    `🎉🎉  项目结构初始化完成, 让我们快乐的开发, Good Luck~`.green.bold
+  );
+  setTimeout(process.exit, 1000);
 };
 
+createTask();
 module.exports = createTask;
