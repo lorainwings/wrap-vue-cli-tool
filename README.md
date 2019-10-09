@@ -1,5 +1,7 @@
 # wrap-vue-cli-tool
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/lorainwings/wrap-vue-cli-tool.svg)](https://greenkeeper.io/)
+
 A command line tool that encapsulates vue-server-cli help us manage multiple pages project;
 
 
